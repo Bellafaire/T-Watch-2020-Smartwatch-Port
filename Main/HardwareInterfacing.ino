@@ -1,6 +1,6 @@
 void initLCD() {
-    ttgo->openBL(); // Turn on the backlight
-    }
+  ttgo->openBL(); // Turn on the backlight
+}
 
 //attach IRQ interrupt
 void initTouch()
@@ -21,7 +21,7 @@ void IRAM_ATTR TOUCH_ISR()
     rapidTouchCount++;
     printDebug("rapidTouchCount: " + String(rapidTouchCount));
 
-    if (rapidTouchCount > 50) {
+    if (rapidTouchCount > 500) {
 #ifdef DEBUG
       Serial.println("**** Rapid Touch shutdown registered ****");
       Serial.flush();
@@ -31,8 +31,11 @@ void IRAM_ATTR TOUCH_ISR()
   } else {
     rapidTouchCount = 0;
   }
+  if(lastTouchTime + 200 < millis()){
+      touchDetected = true;
+  }
   lastTouchTime = millis();
-  touchDetected = true;
+
   // handleTouch();
 }
 
@@ -40,10 +43,12 @@ void IRAM_ATTR TOUCH_ISR()
 struct point readTouch()
 {
   struct point p;
-  if (!digitalRead(TOUCH_IRQ))
+  int16_t x, y;
+  if (ttgo->getTouch(x, y))
   {
-    p.xPos = -1;
-    p.yPos = -1;
+
+    p.xPos = x;
+    p.yPos = y;
   }
   else
   {
@@ -80,7 +85,7 @@ void handleTouch()
 }
 
 int getBatteryPercentage() {
-return ttgo->power->getBattPercentage();
+  return ttgo->power->getBattPercentage();
 }
 
 void drawFrameBuffer() {
@@ -89,5 +94,5 @@ void drawFrameBuffer() {
   //      ttgo->tft->drawPixel(x, y, ttgo->tft->getPixel(x, y));
   //    }
   //  }
-//  ttgo->tft->drawRGBBitmap (0, 0, frameBuffer -> getBuffer (), SCREEN_WIDTH, SCREEN_HEIGHT);
+  //  ttgo->tft->drawRGBBitmap (0, 0, frameBuffer -> getBuffer (), SCREEN_WIDTH, SCREEN_HEIGHT);
 }
