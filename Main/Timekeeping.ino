@@ -198,7 +198,7 @@ void drawDateCentered(int y, int textSize)
 
   String Date = weekday + ", " + String(timeinfo->tm_mon + 1) + "/" + String(timeinfo->tm_mday);
 
-  int x = (160 - (Date.length() * 6 * textSize)) / 2;
+  int x = (SCREEN_WIDTH - (Date.length() * 6 * textSize)) / 2;
 
   ttgo->tft->setTextSize(textSize);
   ttgo->tft->setTextColor(TEXT_COLOR);
@@ -226,37 +226,34 @@ void drawTime(int x, int y, int textSize)
   minute = (timeinfo->tm_min);
   second = timeinfo->tm_sec;
 
-  char timestr[12] = "00:00:00 XM";
+  char timestr[12] = "00:00 XM";
   if (timeinfo->tm_hour > 12)
   {
     timestr[0] = '0' + ((hour - 12) / 10);
     timestr[1] = '0' + ((hour - 12) % 10);
-    timestr[9] = 'P';
+    timestr[6] = 'P';
   }
   else if (timeinfo->tm_hour == 12)
   {
     timestr[0] = '1';
     timestr[1] = '2';
-    timestr[9] = 'P';
+    timestr[6] = 'P';
   }
   else if (timeinfo->tm_hour == 0)
   {
     timestr[0] = '1';
     timestr[1] = '2';
-    timestr[9] = 'A';
+    timestr[6] = 'A';
   }
   else
   {
     timestr[0] = '0' + (timeinfo->tm_hour / 10);
     timestr[1] = '0' + (timeinfo->tm_hour % 10);
-    timestr[9] = 'A';
+    timestr[6] = 'A';
   }
 
   timestr[3] = '0' + (timeinfo->tm_min / 10);
   timestr[4] = '0' + (timeinfo->tm_min % 10);
-
-  timestr[6] = '0' + (timeinfo->tm_sec / 10);
-  timestr[7] = '0' + (timeinfo->tm_sec % 10);
 
   /*  when writing the time we assume that we're writing over something, so for each character
        we fill in a black box behind it exactly the required size. we do this to try and prevent character "flashing"

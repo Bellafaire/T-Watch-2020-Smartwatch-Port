@@ -31,9 +31,10 @@ void IRAM_ATTR TOUCH_ISR()
   } else {
     rapidTouchCount = 0;
   }
-  if(lastTouchTime + 200 < millis()){
+  if(millis() - lastTouchTime > 200){
       touchDetected = true;
   }
+
   lastTouchTime = millis();
 
   // handleTouch();
@@ -46,7 +47,6 @@ struct point readTouch()
   int16_t x, y;
   if (ttgo->getTouch(x, y))
   {
-
     p.xPos = x;
     p.yPos = y;
   }
@@ -72,7 +72,7 @@ void handleTouch()
         //        SettingsTouchHandler(readTouch());
         break;
       case NOTIFICATIONS:
-        //        NotificationsTouchHandler(readTouch());
+        NotificationsTouchHandler(readTouch());
         break;
       case CALCULATOR:
         //        calculatorTouchHandler(readTouch());

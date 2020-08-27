@@ -2,8 +2,8 @@
 */
 bool newNotificationData = false;
 bool dontSleep = false;
-int drawInterval = 1000;
-unsigned long lastDraw = 0;
+int previousPage = 0;
+
 
 void MainLoop()
 {
@@ -12,24 +12,33 @@ void MainLoop()
     if (!newNotificationData && pRemoteCharacteristic) {
       updateNotificationData();
       newNotificationData = true;
+      drawHome();
     }
     if (touchDetected) {
       //handleTouch() operates in a similar manner to the MainLoop()
       //and simply switches to the correct touch handler
       handleTouch();
     } else {
-      if (lastDraw + drawInterval < millis()) {
-        switch (currentPage)
-        {
-          case HOME:
-            dontSleep = false;
+
+      switch (currentPage)
+      {
+        case HOME:
+          dontSleep = false;
+          if (previousPage != currentPage) {
             drawHome();
-            break;
-          default:
-            currentPage = HOME;
-        }
-        lastDraw = millis();
+          }
+          break;
+        case NOTIFICATIONS:
+          dontSleep = false;
+          if (previousPage != currentPage) {
+            drawNotifications();
+          }
+
+          break;
+        default:
+          currentPage = HOME;
       }
+      previousPage = currentPage;
     }
   }
 }

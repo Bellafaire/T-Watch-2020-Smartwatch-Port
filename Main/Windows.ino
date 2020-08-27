@@ -78,13 +78,10 @@ Window::Window(int x, int y, int width, int height, boolean scroll)
 void Window::touch()
 {
   //check if the screen is actually touched
-  if (!digitalRead(TOUCH_IRQ))
+  if (touchDetected)
   {
     struct point p = readTouch();
 
-#ifdef DEBUG
-    Serial.println(String(p.xPos) + " " + String(p.yPos));
-#endif
     //if we have scroll buttons then we check the touch status of each of those buttons
     if (_scroll)
     {
@@ -107,7 +104,7 @@ void Window::touch()
       paintButtonNoBuffer(WindowDownArrowButton);
 
       //check if user tapped outside of window (this closes window)
-      if (p.xPos < _x || p.yPos < _y || p.xPos > _x + _width + 32 || p.yPos > _y + _height)
+      if ((p.xPos < _x || p.yPos < _y || p.xPos > _x + _width + 32 || p.yPos > _y + _height) && (p.xPos > 0) && (p.yPos > 0))
       {
         focused = false;
       }
@@ -181,8 +178,6 @@ void Window::drawTextToWindow(boolean clr) {
   if (clr) {
     ttgo->tft->fillRect(_x + 1 , _y + 1, _width - 2, _height - 2, BACKGROUND_COLOR);
   }
-
-  printDebug(textBuffer);
 
   //set the initial y position
   int ypos = _y + 2 ;
@@ -308,7 +303,7 @@ void SelectionWindow::drawOptionsWindow()
   paintButtonFull(okButton);
   paintButtonFull(DownArrowButton);
 
- 
+
 }
 
 //focuses the selection window (essentially gives full control of the micro controller to this object)
@@ -338,7 +333,8 @@ int SelectionWindow::addOption(String s)
 void SelectionWindow::touch()
 {
   //check if the screen is actually touched
-  if (!digitalRead(TOUCH_IRQ))
+
+  if (touchDetected)
   {
     struct point p = readTouch();
 

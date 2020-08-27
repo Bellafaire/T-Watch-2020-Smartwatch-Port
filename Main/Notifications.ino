@@ -4,12 +4,12 @@ int selectedNotification = 0;
 #define FIELD_SEPARATOR ';'
 #define FIELD_SEPARATOR_STRING ";"
 
-void updateNotificationData(){
-  printDebug("Updating Notification Data"); 
+void updateNotificationData() {
+  printDebug("Updating Notification Data");
   String data = sendBLE("/notifications", true);
   printDebug(data);
-  for(int a = 0; a < NOTIFICATION_DATA_BUFFER_SIZE; a++){
-    notificationData[a] = data[a]; 
+  for (int a = 0; a < NOTIFICATION_DATA_BUFFER_SIZE; a++) {
+    notificationData[a] = data[a];
   }
   updateTimeFromNotificationData();
 }
@@ -20,13 +20,15 @@ void NotificationsTouchHandler(struct point p) {
   if (checkButtonPress(homeButton, p.xPos, p.yPos))
   {
     pressButton(homeButton);
-    currentPage= HOME; 
+    currentPage = HOME;
+    drawNotifications();
   }
   else if (checkButtonPress(upArrowButton, p.xPos, p.yPos))
   {
     if (selectedNotification > 0)
     {
       selectedNotification--;
+      drawNotifications();
     }
   }
   else if (checkButtonPress(downArrowButton, p.xPos, p.yPos))
@@ -34,10 +36,12 @@ void NotificationsTouchHandler(struct point p) {
     if (selectedNotification < numberOfNotifications - 2)
     {
       selectedNotification++;
+      drawNotifications();
     }
   }
   else if (p.xPos > 0 && p.xPos < SCREEN_WIDTH - 32 && p.yPos > 0 && p.yPos < SCREEN_HEIGHT) {
     openNotification(selectedNotification);
+    drawNotifications();
   }
 
   printDebug("notification selected index: " + String(selectedNotification));
@@ -45,7 +49,7 @@ void NotificationsTouchHandler(struct point p) {
 }
 
 void openNotification(int sel) {
-  Window w = Window(0, 14, 160, 100, true);
+  Window w = Window(0, 14, SCREEN_WIDTH, SCREEN_HEIGHT - 60, true);
 
   w.println(parseFromNotifications(sel, 0)); //app name
 
@@ -104,8 +108,8 @@ void switchToNotifications()
 
 void drawNotifications() {
   //fill in the background
-   ttgo->tft->fillScreen(TFT_BLACK);
-
+  ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->setTextSize(2);
   int y_pos = 0;
   numberOfNotifications = getNotificationLines();
   if (numberOfNotifications > 0) {
@@ -113,7 +117,7 @@ void drawNotifications() {
     //for whatever reason line 1 is a blank line and the last line contains the time
     for (int a = 0; a < numberOfNotifications - 1; a++) {
       if (selectedNotification == a) {
-        ttgo->tft->fillRect(0, y_pos - 1, SCREEN_WIDTH, 8, INTERFACE_COLOR);
+        ttgo->tft->fillRect(0, y_pos - 1, SCREEN_WIDTH, 16, INTERFACE_COLOR);
         ttgo->tft->setTextColor(BACKGROUND_COLOR);
         ttgo->tft->setCursor(0, y_pos);
         ttgo->tft->print(parseFromNotifications(a, 0));
@@ -122,21 +126,21 @@ void drawNotifications() {
         ttgo->tft->setCursor(0, y_pos);
         ttgo->tft->print(parseFromNotifications(a, 0));
       }
-      y_pos += 10;
+      y_pos += 20;
     }
     ttgo->tft->setTextWrap(true);
   } else {
     ttgo->tft->setCursor(0, 0);
     ttgo->tft->print("No Notifications");
   }
-
+  ttgo->tft->setTextSize(0);
   //just setting this back to prevent any issues later.
   ttgo->tft->setTextColor(TEXT_COLOR);
 
   paintButtonFull(upArrowButton);
   paintButtonFull(downArrowButton);
   paintButtonFull(homeButton);
- drawFrameBuffer();
+  drawFrameBuffer();
 }
 
 

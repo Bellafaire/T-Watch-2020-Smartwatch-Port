@@ -11,9 +11,9 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println("Started Watch");
-  initTouch();
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
+  initTouch();
   ttgo->openBL(); // Turn on the backlight
   ttgo->tft->fillScreen(TFT_BLACK);
 

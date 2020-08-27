@@ -6,8 +6,8 @@ long lastSongCheck = 0;
 #define SONG_CHECK_INTERVAL 500 //how many miliseconds between checking the current song
 
 void writeNotifications() {
-  ttgo->tft->setCursor(0, 40);
-  ttgo->tft->setTextSize(0);
+  ttgo->tft->setCursor(0,60);
+  ttgo->tft->setTextSize(2);
   ttgo->tft->setTextWrap(false);
 
   int lines = getNotificationLines();
@@ -28,7 +28,7 @@ void writeNotifications() {
   ttgo->tft->println(parseFromNotifications(lines - 1, 0));
   ttgo->tft->setTextColor(INTERFACE_COLOR);
 #endif
-
+  ttgo->tft->setTextSize(1);
 }
 
 int circlePosition = 0;
@@ -59,10 +59,10 @@ void drawHome()
   //  drawArc(80, 60, 50, 10, circlePosition++, 30,  0x0011);
 
   ttgo->tft->drawFastHLine(0, 5, ttgo->tft->width(), INTERFACE_COLOR);
-  drawTime(SCREEN_WIDTH / 2 - 67, 10, 2);
-  ttgo->tft->drawLine(0, 29, 10, 29, INTERFACE_COLOR);
-  ttgo->tft->drawLine(SCREEN_WIDTH, 29, SCREEN_WIDTH - 10, 29, INTERFACE_COLOR);
-  drawDateCentered(26, 1);
+  drawTime(60, 15, 3);
+  ttgo->tft->drawLine(0, 50, 10, 50, INTERFACE_COLOR);
+  ttgo->tft->drawLine(SCREEN_WIDTH, 50, SCREEN_WIDTH - 10, 50, INTERFACE_COLOR);
+  drawDateCentered(50, 1);
   ttgo->tft->setTextSize(1);
   ttgo->tft->setCursor(0, 40);
 
