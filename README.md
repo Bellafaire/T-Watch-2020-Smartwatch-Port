@@ -2,7 +2,8 @@
 This repo is a port of the core functionality of my ESP32 based smartwatch (https://github.com/Bellafaire/ESP32-Smart-Watch) to the TTGO T-Watch 2020. 
 This firmware can track the time and date, read android phone notifications, and control spotify all through a companion BLE app installed on an android device. 
 
-<https://raw.githubusercontent.com/Bellafaire/T-Watch-2020-Smartwatch-Port/master/Images/IMG_20200827_135938.jpg" height="400px" />
+<img src="https://raw.githubusercontent.com/Bellafaire/T-Watch-2020-Smartwatch-Port/master/Images/IMG_20200827_135938.jpg" height="400px" />
+
 
 ## Installation
 
