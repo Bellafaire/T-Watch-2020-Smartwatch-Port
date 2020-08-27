@@ -1,5 +1,6 @@
 /* due to the limited screen size this class is designed to be called in functions to display larger amounts of text to the user.
-    Allows for nearly unlimted string data to be stored in the textbox. and then opened/closed
+    Allows for nearly unlimted string data to be stored in the textbox. and then opened/closed 
+    Selection windows allow the user to select from a list of options by using arrow navigation. 
 */
 
 boolean Window::isFocused()

@@ -1,3 +1,7 @@
+/*All the functions that need to get information from hardware outside of the ESP32 
+ * are located here including battery monitoring and touch.
+ */
+
 void initLCD() {
   ttgo->openBL(); // Turn on the backlight
 }

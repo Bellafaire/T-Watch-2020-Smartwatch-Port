@@ -1,3 +1,7 @@
+/*Updating notification data in memory and showing the notifications page
+ * which is accessed by pressing the bell icon on the home screen. 
+ */
+
 int numberOfNotifications;
 int selectedNotification = 0;
 

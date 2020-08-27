@@ -1,3 +1,7 @@
+/* Home Page of the watch, this is where most of the 
+ *  important information is displayed to the user.  
+ */
+
 bool firstHomeSwitch = true;
 
 double songNameScrollPosition = 0;

@@ -1,3 +1,6 @@
+//keep time, this code is kind of a hot mess and could use a good refactor
+//also handles drawing time and date to the display
+
 boolean correctTime = true;
 //header file for the time.h library https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal-timer.h (closest thing to documentation I've found so far)
 
