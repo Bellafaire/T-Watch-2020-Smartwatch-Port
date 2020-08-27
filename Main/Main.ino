@@ -12,10 +12,11 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Started Watch");
   initLCD();
-  frameBuffer->fillScreen(BACKGROUND_COLOR);
-  tft.drawRGBBitmap (0, 0, frameBuffer -> getBuffer (), SCREEN_WIDTH, SCREEN_HEIGHT);
-  Serial.println("Done drawing");
-  delay(5000);
+  frameBuffer = new GFXcanvas16 (SCREEN_WIDTH, SCREEN_HEIGHT);
+  tft.drawRGBBitmap(0, 0, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+  MainLoop();
+
   deviceSleep();
 }
 
