@@ -123,7 +123,7 @@ void drawHome()
 
   paintButtonFull(homeNotificationsButton);
   paintButtonFull(homeAppsButton);
-  paintButtonFull(homeSettingsButton);
+//  paintButtonFull(homeSettingsButton);
 
   drawFrameBuffer();
 }
@@ -138,11 +138,11 @@ void HomeTouchHandler(struct point p)
   else if (checkButtonPress(homeAppsButton, p.xPos, p.yPos)) {
     //    openApps();
   }
-  else if (checkButtonPress(homeSettingsButton, p.xPos, p.yPos))
-  {
-    pressButton(homeSettingsButton);
-    currentPage = SETTINGS;
-  }
+//  else if (checkButtonPress(homeSettingsButton, p.xPos, p.yPos))
+//  {
+//    pressButton(homeSettingsButton);
+//    currentPage = SETTINGS;
+//  }
   else if (checkButtonPress(lastSongButton, p.xPos, p.yPos)) {
     sendBLE("/lastSong", false);
     printDebug("Last Song Button Pressed");
