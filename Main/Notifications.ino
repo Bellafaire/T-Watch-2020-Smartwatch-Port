@@ -104,34 +104,34 @@ void switchToNotifications()
 
 void drawNotifications() {
   //fill in the background
-  frameBuffer -> drawRGBBitmap(0, 0, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+   ttgo->tft->fillScreen(TFT_BLACK);
 
   int y_pos = 0;
   numberOfNotifications = getNotificationLines();
   if (numberOfNotifications > 0) {
-    tft.setTextWrap(false);
+    ttgo->tft->setTextWrap(false);
     //for whatever reason line 1 is a blank line and the last line contains the time
     for (int a = 0; a < numberOfNotifications - 1; a++) {
       if (selectedNotification == a) {
-        tft.fillRect(0, y_pos - 1, SCREEN_WIDTH, 8, INTERFACE_COLOR);
-        tft.setTextColor(BACKGROUND_COLOR);
-        tft.setCursor(0, y_pos);
-        tft.print(parseFromNotifications(a, 0));
+        ttgo->tft->fillRect(0, y_pos - 1, SCREEN_WIDTH, 8, INTERFACE_COLOR);
+        ttgo->tft->setTextColor(BACKGROUND_COLOR);
+        ttgo->tft->setCursor(0, y_pos);
+        ttgo->tft->print(parseFromNotifications(a, 0));
       } else {
-        tft.setTextColor(INTERFACE_COLOR);
-        tft.setCursor(0, y_pos);
-        tft.print(parseFromNotifications(a, 0));
+        ttgo->tft->setTextColor(INTERFACE_COLOR);
+        ttgo->tft->setCursor(0, y_pos);
+        ttgo->tft->print(parseFromNotifications(a, 0));
       }
       y_pos += 10;
     }
-    tft.setTextWrap(true);
+    ttgo->tft->setTextWrap(true);
   } else {
-    tft.setCursor(0, 0);
-    tft.print("No Notifications");
+    ttgo->tft->setCursor(0, 0);
+    ttgo->tft->print("No Notifications");
   }
 
   //just setting this back to prevent any issues later.
-  tft.setTextColor(TEXT_COLOR);
+  ttgo->tft->setTextColor(TEXT_COLOR);
 
   paintButtonFull(upArrowButton);
   paintButtonFull(downArrowButton);

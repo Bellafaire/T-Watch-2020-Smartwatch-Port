@@ -39,8 +39,8 @@ Window::Window(int x, int y, int width, int height, boolean scroll)
     _height = height;
 
     //fill in background so we can actually read the text
-    tft.fillRect(_x, _y, width, height, BACKGROUND_COLOR);
-    tft.drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
+    ttgo->tft->fillRect(_x, _y, width, height, BACKGROUND_COLOR);
+    ttgo->tft->drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
 
     //now add buttons to the right hand side, we use icon buttons for obvious reasons
     WindowUpArrowButton._x = x + width - 20;
@@ -68,8 +68,8 @@ Window::Window(int x, int y, int width, int height, boolean scroll)
     y_cursor = y + 1;
     _width = width;
     _height = height;
-    tft.fillRect(_x, _y, width, height, BACKGROUND_COLOR);
-    tft.drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
+    ttgo->tft->fillRect(_x, _y, width, height, BACKGROUND_COLOR);
+    ttgo->tft->drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
   }
 }
 
@@ -170,8 +170,8 @@ void Window::drawTextToWindow(boolean clr) {
   int maxLines = _height / 8;
 
   //set color;
-  tft.setTextColor(TEXT_COLOR);
-  tft.setTextSize(1);
+  ttgo->tft->setTextColor(TEXT_COLOR);
+  ttgo->tft->setTextSize(1);
 
   //to make things easier to read in some cases surrounding a word with '_' should cause that word to be displayed as gray.
   //we use this variable to control that change.
@@ -179,7 +179,7 @@ void Window::drawTextToWindow(boolean clr) {
 
   //if parameter indicates that we should clear the screen then we clear the screen (things like scrolling require this)
   if (clr) {
-    tft.fillRect(_x + 1 , _y + 1, _width - 2, _height - 2, BACKGROUND_COLOR);
+    ttgo->tft->fillRect(_x + 1 , _y + 1, _width - 2, _height - 2, BACKGROUND_COLOR);
   }
 
   printDebug(textBuffer);
@@ -188,7 +188,7 @@ void Window::drawTextToWindow(boolean clr) {
   int ypos = _y + 2 ;
 
   //set position
-  tft.setCursor(_x + 2, ypos);
+  ttgo->tft->setCursor(_x + 2, ypos);
 
   int maxCharactersPerRow = _width / 6;
 
@@ -202,12 +202,12 @@ void Window::drawTextToWindow(boolean clr) {
         if (line[b] == '_') {
           isGrayed = !isGrayed;
           if (isGrayed) {
-            tft.setTextColor(GRAYED);
+            ttgo->tft->setTextColor(GRAYED);
           } else {
-            tft.setTextColor(TEXT_COLOR);
+            ttgo->tft->setTextColor(TEXT_COLOR);
           }
         } else {
-          tft.print(line[b]);
+          ttgo->tft->print(line[b]);
         }
       }
     } else {
@@ -216,7 +216,7 @@ void Window::drawTextToWindow(boolean clr) {
 
 
       do {
-        tft.print(line.substring(startPos, endPos));
+        ttgo->tft->print(line.substring(startPos, endPos));
 
         if (endPos + maxCharactersPerRow > line.length()) {
           endPos = line.length();
@@ -225,8 +225,8 @@ void Window::drawTextToWindow(boolean clr) {
           if (ypos > _y + _height - 8) {
             return;
           }
-          tft.setCursor(_x + 2, ypos);
-          tft.print(line.substring(startPos, endPos));
+          ttgo->tft->setCursor(_x + 2, ypos);
+          ttgo->tft->print(line.substring(startPos, endPos));
         } else {
           endPos += maxCharactersPerRow;
           startPos += maxCharactersPerRow;
@@ -235,7 +235,7 @@ void Window::drawTextToWindow(boolean clr) {
       while (endPos < line.length());
     }
     ypos += 8;
-    tft.setCursor(_x + 2, ypos);
+    ttgo->tft->setCursor(_x + 2, ypos);
     if (ypos > _y + _height - 8) {
       return;
     }
@@ -278,32 +278,32 @@ String Window::getValue(String data, char separator, int index)
 */
 void SelectionWindow::drawOptionsWindow()
 {
-  // frameBuffer -> drawRGBBitmap(0, 0, background, SCREEN_WIDTH, SCREEN_HEIGHT);
-  tft.fillRect(_x, _y, _width, _height, BACKGROUND_COLOR);
+  //  ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->fillRect(_x, _y, _width, _height, BACKGROUND_COLOR);
 
   int maxOptions = _height / 8;
   int scrollPosition = selection / maxOptions;
 
-  tft.setTextSize(1);
-  tft.setTextColor(INTERFACE_COLOR);
+  ttgo->tft->setTextSize(1);
+  ttgo->tft->setTextColor(INTERFACE_COLOR);
 
   for (int a = scrollPosition * maxOptions; a < (scrollPosition + 1)*maxOptions; a++)
   {
-    tft.setCursor(_x + 1, _y + (a - scrollPosition * maxOptions) * 8 + 1);
+    ttgo->tft->setCursor(_x + 1, _y + (a - scrollPosition * maxOptions) * 8 + 1);
 
     if (a == selection)
     {
-      tft.setTextColor(BACKGROUND_COLOR);
-      tft.fillRect(_x + 1, _y + (a - scrollPosition * maxOptions) * 8, _width - 16, 8, INTERFACE_COLOR);
+      ttgo->tft->setTextColor(BACKGROUND_COLOR);
+      ttgo->tft->fillRect(_x + 1, _y + (a - scrollPosition * maxOptions) * 8, _width - 16, 8, INTERFACE_COLOR);
     }
     else
     {
-      tft.setTextColor(INTERFACE_COLOR);
-      tft.fillRect(_x + 1, _y + (a - scrollPosition * maxOptions) * 8, _width - 16, 8, BACKGROUND_COLOR);
+      ttgo->tft->setTextColor(INTERFACE_COLOR);
+      ttgo->tft->fillRect(_x + 1, _y + (a - scrollPosition * maxOptions) * 8, _width - 16, 8, BACKGROUND_COLOR);
     }
-    tft.print(getValue(options, optionDivider, a));
+    ttgo->tft->print(getValue(options, optionDivider, a));
   }
-  tft.drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
+  ttgo->tft->drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
   paintButtonFull(UpArrowButton);
   paintButtonFull(okButton);
   paintButtonFull(DownArrowButton);
@@ -386,8 +386,8 @@ SelectionWindow::SelectionWindow(int x, int y, int width, int height)
   DownArrowButton = {_x + _width - SELECTION_WINDOW_BUTTON_WIDTH, _y + heightSpacing * 2, SELECTION_WINDOW_BUTTON_WIDTH, heightSpacing, INTERFACE_COLOR, BACKGROUND_COLOR, {(0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b00001111 << 8) | 0b11110000, (0b11111111 << 8) | 0b11111111, (0b01111111 << 8) | 0b11111110, (0b00111111 << 8) | 0b11111100, (0b00011111 << 8) | 0b11111000, (0b00001111 << 8) | 0b11110000, (0b00000111 << 8) | 0b11100000, (0b00000011 << 8) | 0b11000000, (0b00000001 << 8) | 0b10000000}};
 
   //clear background and draw outline
-  tft.fillRect(_x, _y, _width, _height, BACKGROUND_COLOR);
-  tft.drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
+  ttgo->tft->fillRect(_x, _y, _width, _height, BACKGROUND_COLOR);
+  ttgo->tft->drawRect(_x, _y, _width, _height, INTERFACE_COLOR);
 
   //init selection
   selection = 0;

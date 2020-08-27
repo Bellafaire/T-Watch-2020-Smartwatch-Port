@@ -1,13 +1,12 @@
 #include <Wire.h>
-#include <Adafruit_GFX.h>    // Core graphics library
-#include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
-#include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
-//frame buffer for drawing more elaborate UI elements
-GFXcanvas16* frameBuffer;
-
 #include <WiFi.h>
 #include <SPI.h>
 #include "BLEDevice.h"
+
+#define LILYGO_WATCH_2020_V1  
+#include <LilyGoWatch.h>
+
+TTGOClass *ttgo;
 
 //just to avoid putting my wifi credentials on the public repo
 //Later the wifi credentials should be stored in eeprom or on the android device
@@ -31,7 +30,7 @@ GFXcanvas16* frameBuffer;
 #define LCD_DC 27 //LCD_A0
 #define LCD_RST -1
 #define LCD_MOSI 19
-Adafruit_ST7789 tft = Adafruit_ST7789(LCD_CS, LCD_DC, LCD_MOSI, LCD_SCK, LCD_RST);
+//Adafruit_ST7789 tft = Adafruit_ST7789(LCD_CS, LCD_DC, LCD_MOSI, LCD_SCK, LCD_RST);
 
 #define TOUCH_IRQ 38
 
@@ -39,11 +38,11 @@ Adafruit_ST7789 tft = Adafruit_ST7789(LCD_CS, LCD_DC, LCD_MOSI, LCD_SCK, LCD_RST
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 240
 
-#define BACKGROUND_COLOR ST77XX_BLACK
-#define TEXT_COLOR ST77XX_WHITE
-#define INTERFACE_COLOR ST77XX_WHITE
+#define BACKGROUND_COLOR TFT_BLACK
+#define TEXT_COLOR TFT_WHITE
+#define INTERFACE_COLOR TFT_WHITE
 #define GRAYED 0xBDF7
-int ERROR_COLOR = ST77XX_BLUE;
+int ERROR_COLOR = TFT_BLUE;
 
 //Time tracker variables (Stored in RTC)
 #define NOTIFICATION_DATA_BUFFER_SIZE 2048
@@ -62,7 +61,7 @@ boolean nonCriticalOperation = false; //indicates that the code running may take
 boolean touchDetected = false;
 int currentPage = HOME;
 unsigned long lastTouchTime = 0;
-int screenOnTime =  10000; //time before watch screen times out without user input
+int screenOnTime =  15000; //time before watch screen times out without user input
 boolean wokenByAccelerometer = false;
 
 //structures
@@ -201,7 +200,6 @@ class SelectionWindow {
     String getValue(String data, char separator, int index); //splits the options string
     void touch(); //touch handler
 };
-
 
 
 //"simpleplanet.jpg" width=240 height=240

@@ -6,27 +6,27 @@ long lastSongCheck = 0;
 #define SONG_CHECK_INTERVAL 500 //how many miliseconds between checking the current song
 
 void writeNotifications() {
-  tft.setCursor(0, 40);
-  tft.setTextSize(0);
-  tft.setTextWrap(false);
+  ttgo->tft->setCursor(0, 40);
+  ttgo->tft->setTextSize(0);
+  ttgo->tft->setTextWrap(false);
 
   int lines = getNotificationLines();
-  tft.println("Notifications");
+  ttgo->tft->println("Notifications");
 
   if (lines > 1) {
     for (int a = 0; a < lines - 1; a++) {
-      tft.println(parseFromNotifications(a, 0));
+      ttgo->tft->println(parseFromNotifications(a, 0));
     }
   } else {
-    tft.println("No Notifications");
+    ttgo->tft->println("No Notifications");
   }
-  tft.setTextWrap(true);
+  ttgo->tft->setTextWrap(true);
 
 #ifdef SHOW_LAST_NOTIFICATION_TIME
-  tft.setTextColor(GRAYED);
-  tft.setCursor(2, SCREEN_HEIGHT - 20);
-  tft.println(parseFromNotifications(lines - 1, 0));
-  tft.setTextColor(INTERFACE_COLOR);
+  ttgo->tft->setTextColor(GRAYED);
+  ttgo->tft->setCursor(2, SCREEN_HEIGHT - 20);
+  ttgo->tft->println(parseFromNotifications(lines - 1, 0));
+  ttgo->tft->setTextColor(INTERFACE_COLOR);
 #endif
 
 }
@@ -36,7 +36,7 @@ int circlePosition = 0;
 void drawHome()
 {
 
-  frameBuffer -> drawRGBBitmap(0, 0, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+   ttgo->tft->fillScreen(TFT_BLACK);
 
   //check if we've got a song playing on spotify at the moment, but only once every SONG_CHECK_INTERVAL miliseconds
   if (lastSongCheck + SONG_CHECK_INTERVAL < millis()) {
@@ -58,35 +58,35 @@ void drawHome()
   //    drawCircularAnimation1(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 + 30);
   //  drawArc(80, 60, 50, 10, circlePosition++, 30,  0x0011);
 
-  tft.drawFastHLine(0, 5, tft.width(), INTERFACE_COLOR);
+  ttgo->tft->drawFastHLine(0, 5, ttgo->tft->width(), INTERFACE_COLOR);
   drawTime(SCREEN_WIDTH / 2 - 67, 10, 2);
-  tft.drawLine(0, 29, 10, 29, INTERFACE_COLOR);
-  tft.drawLine(SCREEN_WIDTH, 29, SCREEN_WIDTH - 10, 29, INTERFACE_COLOR);
+  ttgo->tft->drawLine(0, 29, 10, 29, INTERFACE_COLOR);
+  ttgo->tft->drawLine(SCREEN_WIDTH, 29, SCREEN_WIDTH - 10, 29, INTERFACE_COLOR);
   drawDateCentered(26, 1);
-  tft.setTextSize(1);
-  tft.setCursor(0, 40);
+  ttgo->tft->setTextSize(1);
+  ttgo->tft->setCursor(0, 40);
 
   if (connected) {
-    tft. fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00111111 << 5); //if connected draw a green square in the corner
+    ttgo->tft-> fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00111111 << 5); //if connected draw a green square in the corner
   } else if (myDevice) {
-    tft. fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00011111 << 11); //Show a blue square if we found the device
+    ttgo->tft-> fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00011111 << 11); //Show a blue square if we found the device
   } else {
-    tft. fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00011111 ); //else draw red square
+    ttgo->tft-> fillRect(SCREEN_WIDTH - 3, 0, 3, 3, 0b00011111 ); //else draw red square
   }
 
   writeNotifications() ;
 
   if (isPlaying) {
-    tft.setCursor(0, SCREEN_HEIGHT - 10);
+    ttgo->tft->setCursor(0, SCREEN_HEIGHT - 10);
     if (songNameScrollPosition + 24 < String(songName).length()) {
       songNameScrollPosition += 0.1;
     } else {
       songNameScrollPosition = 0;
     }
 
-    tft.setTextWrap(false);
-    tft.println(String(songName).substring(round(songNameScrollPosition)));
-    tft.setTextWrap(true);
+    ttgo->tft->setTextWrap(false);
+    ttgo->tft->println(String(songName).substring(round(songNameScrollPosition)));
+    ttgo->tft->setTextWrap(true);
     int buttonWidth = (SCREEN_WIDTH - 32) / 4;
 
     lastSongButton._x = 0 * buttonWidth;
@@ -115,10 +115,10 @@ void drawHome()
     paintButtonFull(nextSongButton);
 
   } else {
-    tft.setCursor(0, SCREEN_HEIGHT - 10);
-    tft.print("Battery ");
-    tft.print(String(getBatteryPercentage()));
-    tft.print("%");
+    ttgo->tft->setCursor(0, SCREEN_HEIGHT - 10);
+    ttgo->tft->print("Battery ");
+    ttgo->tft->print(String(getBatteryPercentage()));
+    ttgo->tft->print("%");
   }
 
   paintButtonFull(homeNotificationsButton);

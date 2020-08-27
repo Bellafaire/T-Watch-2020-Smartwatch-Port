@@ -11,9 +11,10 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println("Started Watch");
-  initLCD();
-  frameBuffer = new GFXcanvas16 (SCREEN_WIDTH, SCREEN_HEIGHT);
-  tft.drawRGBBitmap(0, 0, background, SCREEN_WIDTH, SCREEN_HEIGHT);
+  ttgo = TTGOClass::getWatch();
+  ttgo->begin();
+  ttgo->openBL(); // Turn on the backlight
+  ttgo->tft->fillScreen(TFT_BLACK);
 
   MainLoop();
 
