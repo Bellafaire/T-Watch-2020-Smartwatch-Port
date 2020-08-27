@@ -14,7 +14,7 @@ TTGOClass *ttgo;
 #include "J:\Dropbox\Dropbox\Lab Projects\Smart Watch\WifiCredentials.h"
 
 //prints debug information to the serial terminal when declared
-#define DEBUG
+//#define DEBUG
 
 //pages
 #define TEST_SCREEN 0
