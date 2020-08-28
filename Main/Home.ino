@@ -1,16 +1,16 @@
-/* Home Page of the watch, this is where most of the 
- *  important information is displayed to the user.  
- */
+/* Home Page of the watch, this is where most of the
+    important information is displayed to the user.
+*/
 
 bool firstHomeSwitch = true;
 
 double songNameScrollPosition = 0;
 
 long lastSongCheck = 0;
-#define SONG_CHECK_INTERVAL 500 //how many miliseconds between checking the current song
+#define SONG_CHECK_INTERVAL 100 //how many miliseconds between checking the current song
 
 void writeNotifications() {
-  ttgo->tft->setCursor(0,60);
+  ttgo->tft->setCursor(0, 60);
   ttgo->tft->setTextSize(2);
   ttgo->tft->setTextWrap(false);
 
@@ -40,7 +40,7 @@ int circlePosition = 0;
 void drawHome()
 {
 
-   ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->fillScreen(TFT_BLACK);
 
   //check if we've got a song playing on spotify at the moment, but only once every SONG_CHECK_INTERVAL miliseconds
   if (lastSongCheck + SONG_CHECK_INTERVAL < millis()) {
@@ -91,27 +91,27 @@ void drawHome()
     ttgo->tft->setTextWrap(false);
     ttgo->tft->println(String(songName).substring(round(songNameScrollPosition)));
     ttgo->tft->setTextWrap(true);
-    int buttonWidth = (SCREEN_WIDTH - 32) / 4;
+    int buttonWidth = (SCREEN_WIDTH - 48) / 4;
 
     lastSongButton._x = 0 * buttonWidth;
-    lastSongButton._y = SCREEN_HEIGHT - 42;
+    lastSongButton._y = SCREEN_HEIGHT - 62;
     lastSongButton._width = buttonWidth;
-    lastSongButton._height = 32;
+    lastSongButton._height = 52;
 
     pauseButton._x = 1 * buttonWidth;
-    pauseButton._y = SCREEN_HEIGHT - 42;
+    pauseButton._y = SCREEN_HEIGHT - 62;
     pauseButton._width = buttonWidth;
-    pauseButton._height = 32;
+    pauseButton._height = 52;
 
     playButton._x = 2 * buttonWidth;
-    playButton._y = SCREEN_HEIGHT - 42;
+    playButton._y = SCREEN_HEIGHT - 62;
     playButton._width = buttonWidth;
-    playButton._height = 32;
+    playButton._height = 52;
 
     nextSongButton._x = 3 * buttonWidth;
-    nextSongButton._y = SCREEN_HEIGHT - 42;
+    nextSongButton._y = SCREEN_HEIGHT - 62;
     nextSongButton._width = buttonWidth;
-    nextSongButton._height = 32;
+    nextSongButton._height = 52;
 
     paintButtonFull(lastSongButton);
     paintButtonFull(pauseButton);
@@ -127,7 +127,7 @@ void drawHome()
 
   paintButtonFull(homeNotificationsButton);
   paintButtonFull(homeAppsButton);
-//  paintButtonFull(homeSettingsButton);
+  //  paintButtonFull(homeSettingsButton);
 
   drawFrameBuffer();
 }
@@ -142,11 +142,6 @@ void HomeTouchHandler(struct point p)
   else if (checkButtonPress(homeAppsButton, p.xPos, p.yPos)) {
     //    openApps();
   }
-//  else if (checkButtonPress(homeSettingsButton, p.xPos, p.yPos))
-//  {
-//    pressButton(homeSettingsButton);
-//    currentPage = SETTINGS;
-//  }
   else if (checkButtonPress(lastSongButton, p.xPos, p.yPos)) {
     sendBLE("/lastSong", false);
     printDebug("Last Song Button Pressed");
