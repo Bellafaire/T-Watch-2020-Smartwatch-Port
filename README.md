@@ -15,5 +15,6 @@ Make sure that you have the T-Watch Library installed on your Arduino IDE (https
 
 In order to obtain phone notifications and control spotify you must have the BLE companion app running on your android device. 
 The sources for the BLE Companion App can be found here: https://github.com/Bellafaire/Android-Companion-App-For-BLE-Devices Along with instructions for installation. 
+**Please Note: Currently this code can only operate with the BLE Companion app up to release 1.2.0. Releases after 2.0.0 have signifigant changes to bluetooth communication**
 
 
